@@ -10,10 +10,10 @@ A comprehensive Python package for analyzing single-cell DNA methylation data, r
 
 ```bash
 # Install from GitHub
-pip install git+https://github.com/yourusername/methscan2.git
+pip install git+https://github.com/hengbingao/methscan2.git
 
 # Or install from source
-git clone https://github.com/yourusername/methscan2.git
+git clone https://github.com/hengbingao/methscan2.git
 cd methscan2
 pip install -e .
 ```

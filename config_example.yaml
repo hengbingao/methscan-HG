@@ -1,0 +1,76 @@
+# scMethylSeq Pipeline Configuration
+# Complete workflow from allc to AnnData
+
+# ============================================================================
+# PIPELINE CONTROL - Set which steps to run
+# ============================================================================
+run_allc_processing: false    # Step 1: Extract CG/CH from allc files
+run_cov_conversion: false      # Step 2: Convert allc to cov format
+run_global_meth: false         # Step 3: Calculate global methylation
+run_qc: true                   # Step 4: Quality control and filtering
+run_gene_meth: true            # Step 5: Calculate gene body methylation
+run_matrix_building: true      # Step 6: Build methylation matrices
+run_adata_building: true       # Step 7: Build AnnData object
+
+# ============================================================================
+# SYSTEM RESOURCES
+# ============================================================================
+n_jobs: 20                     # Number of parallel processes
+
+# ============================================================================
+# INPUT FILES AND DIRECTORIES
+# ============================================================================
+# Original data
+allc_dir: "/path/to/allc/files"
+chrom_sizes: "/path/to/hg38.chrom.sizes"
+
+# Genomic annotations
+gene_bed: "/path/to/genebody_extend2kb.bed"
+gene_names_file: "/path/to/hg38_genename.txt"
+
+# ============================================================================
+# OUTPUT DIRECTORIES
+# ============================================================================
+# Base output directory
+output_base: "/path/to/output"
+
+# Step 1 output: Processed allc files
+processed_allc_dir: "${output_base}/processed_allc"
+
+# Step 2 output: Cov files
+cg_cov_dir: "${output_base}/CG_cov"
+ch_cov_dir: "${output_base}/CH_cov"
+
+# Step 3 output: Global methylation levels
+global_cg_file: "${output_base}/global_level/all_cell_global_averagemCG"
+global_ch_file: "${output_base}/global_level/all_cell_global_averagemCH"
+
+# Step 4 output: QC results
+qc_output_dir: "${output_base}/qc_results"
+
+# Step 5 output: Gene body methylation
+cg_gene_meth_dir: "${output_base}/CG_gene_meth"
+ch_gene_meth_dir: "${output_base}/CH_gene_meth"
+
+# Step 6 output: Methylation matrices
+cg_matrix_file: "${output_base}/matrices/cell_mCG_matrix"
+ch_matrix_file: "${output_base}/matrices/cell_mCH_matrix"
+
+# Step 7 output: Final AnnData
+metadata_file: "${output_base}/metadata/cell_metadata.csv"
+output_h5ad: "${output_base}/humanPFC_adata_CGgenebody.h5ad"
+
+# ============================================================================
+# QC PARAMETERS
+# ============================================================================
+qc_params:
+  cg_min: 0.5                  # Minimum global CG methylation level (0-1)
+  cg_sites_min: 100000         # Minimum number of CG sites
+  cg_sites_max: 2500000        # Maximum number of CG sites
+  ch_max: 0.1                  # Maximum global CH methylation level (0-1)
+  ch_sites_min: 100000         # Minimum number of CH sites
+
+# ============================================================================
+# CLEANUP OPTIONS
+# ============================================================================
+cleanup_intermediate: true     # Remove intermediate files to save space
